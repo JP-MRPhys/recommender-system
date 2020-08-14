@@ -5,15 +5,15 @@ from urllib.request import urlopen
 import re
 import pandas as pd
 import time
-
-headers={"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
-
 from newspaper import Article
 
-BASEURL='https://cloud.iexapis.com/'
-BASEURL_SANDBOX = 'https://sandbox.iexapi.com/'
+
+
+headers={"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
+BASEURL_IEX='https://cloud.iexapis.com/'
+BASEURL__IEX_SANDBOX = 'https://sandbox.iexapi.com/'
 Token='Tpk_1bb3e623cb6342708a67c0517a71e492'
-URL=BASEURL+'stable/time-series/news/aapl?range=last-week&limit=1000&token='+Token
+URL=BASEURL__IEX_SANDBOX+'stable/time-series/news/aapl?range=last-week&limit=1000&token='+Token
 URL='https://sandbox.iexapis.com/stable/time-series/news/aapl?range=last-week&limit=10&token=Tpk_1bb3e623cb6342708a67c0517a71e492'
 NASDAQ_BASE="https://www.nasdaq.com"
 
