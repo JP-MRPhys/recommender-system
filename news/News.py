@@ -81,8 +81,6 @@ def get_news_urls_nasdaq(ticker):
 
 def get_news_urls(links_site):
 
-
-
     print(links_site)
     '''scrape the html of the site'''
     resp = requests.get(links_site, headers=headers, timeout=5)
@@ -118,11 +116,8 @@ def scrape_all_articles(ticker, upper_page_limit=1):
     landing_site = 'http://www.nasdaq.com/symbol/' + ticker + '/news-headlines'
 
     all_news_urls = get_news_urls(landing_site)
-
     print(all_news_urls)
-
     current_urls_list = all_news_urls.copy()
-
     index = 2
 
     '''Loop through each sequential page, scraping the links from each'''
@@ -182,12 +177,8 @@ def get_url_content(url='https://cloud.iexapis.com/v1/news/article/9176b6f7-b9af
     page=requests.get(url)
 
     soup = BeautifulSoup(page.text, 'lxml')
-
-
     for script in soup(["script, style"]):
         script.extract()
-
-
 
     text=soup.get_text()
     raw=clean_html(page.text)
@@ -215,7 +206,7 @@ def url_to_text(url='https://cloud.iexapis.com/v1/news/article/9176b6f7-b9af-414
     #article.nlp()
     #print(article.keywords)
 
-    return article.text
+    return article.text 
 
 
 

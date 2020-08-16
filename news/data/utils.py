@@ -1,7 +1,6 @@
 import pandas as pd
 
-
-def getstockinfo():
+def getstockspn():
 
     table=pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
     df = table[0]
@@ -14,8 +13,8 @@ def getstockinfo():
 
     return df
 
+def getstockfromiex():
 
-if __name__ == '__main__':
-    stocks=getstockinfo()
+    #extract all stock information from IEX top end points 
 
-
+    return
