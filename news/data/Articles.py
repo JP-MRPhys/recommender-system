@@ -1,4 +1,4 @@
-from news.News import *
+from news.data.News.utils import *
 from news.Stocks import getstocktickers
 
 
