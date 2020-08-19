@@ -3,6 +3,8 @@ from numpy import random
 from Stocks import getstockinfo
 import numpy as np
 
+DATADIR='/home/jehill/PycharmProjects/recommendersystem/recommender/data/jsons/'
+
 def random_sample(arr, size = 5): 
     print(arr[1])
     return arr[np.random.choice(len(arr), size=size, replace=False)]
@@ -28,7 +30,7 @@ def getrandomstocks(stocktickers, max=30):
 
 if __name__ == '__main__':
 
-   p=pd.read_json('/Users/jehill/Documents/code/git/recommender-system/news/Nasdaq_articles')
+   p=pd.read_json(DATADIR + 'Nasdaq_articles')
    stocktickers=p["Symbol"].values
    numbersusers=100
    userdata=[]
@@ -56,7 +58,7 @@ if __name__ == '__main__':
    
    usersdf=pd.DataFrame(data=userdata)
    print(usersdf.head(10))
-   usersdf.to_json("/Users/jehill/Documents/code/git/recommender-system/news/data/userdata.json")
+   usersdf.to_json(DATADIR+ "userdata.json")
 
 
 

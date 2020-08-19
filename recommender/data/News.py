@@ -192,9 +192,12 @@ def parse_urls_text(urls, ticker):
 
     for url in urls:
         print("Extracting:" + url)
-        textarray.append({ 'url': url , 'content': url_to_text(url), 'ticker': ticker})
+        content, title= url_to_text(url)
+        textarray.append({ 'url': url , 'content':content, 'title': title, 'ticker': ticker})
 
     return textarray
+
+
 
 def url_to_text(url='https://cloud.iexapis.com/v1/news/article/9176b6f7-b9af-4144-9831-1eb5710be0fc'):
 
@@ -206,7 +209,7 @@ def url_to_text(url='https://cloud.iexapis.com/v1/news/article/9176b6f7-b9af-414
     #article.nlp()
     #print(article.keywords)
 
-    return article.text 
+    return article.text, article.title
 
 
 
