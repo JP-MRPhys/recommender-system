@@ -9,12 +9,15 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
 import sklearn
 import scipy
+from recommender.model.evaluation import ModelEvaluator
 
+#TODO: load all this from a config file
 
 DATADIR='/home/jehill/PycharmProjects/recommendersystem/recommender/data/jsons/'
-USERFILE= DATADIR + 'userdata.json'
+TRAINFILE= DATADIR + 'userdata.json'
+TESTFILE= DATADIR + 'testdata.json'
 ARTICLEFILE= DATADIR +  'article.json'
-
+STOCKFILE = DATADIR + 'Nasdaq_articles'
 
 class ContentBasedRecommender:
     MODEL_NAME = 'Content-Based-News-Aritcles'
@@ -47,15 +50,15 @@ class ContentBasedRecommender:
         similar_items = sorted([(self.item_ids[i], cosine_similarities[0, i]) for i in similar_indices], key=lambda x: -x[1])
         return similar_items
 
-    def recommend_items(self, user, items_to_ignore=[], topn=10, verbose=False):
+    def recommend_items(self, userurls, items_to_ignore=[], topn=10, verbose=False):
 
-        user_profile=self.get_user_profile(user)
+        user_profile=self.get_user_profile(userurls)
         similar_items = self._get_similar_items_to_user_profile(user_profile)
         # Ignores items the user has already interacted
         similar_items_filtered = list(filter(lambda x: x[0] not in items_to_ignore, similar_items))  # this is a list (article_id, similarity)
-        recommended_url=self.similar_items_to_urls(similar_items_filtered)
+        recommended_urls=self.similar_items_to_urls(similar_items_filtered)
 
-        return recommended_url
+        return recommended_urls
 
     def similar_items_to_urls(self, similar_items_filtered):
 
@@ -79,16 +82,23 @@ class ContentBasedRecommender:
         item_profiles = scipy.sparse.vstack(item_profiles_list)
         return item_profiles
 
-    def get_user_profile(self,  user_dataframe):
+    def get_user_profile(self,  user_urls):
 
         # must be one user
+        # user profile from training dataframe urls
 
-        urls=user_dataframe["articles"]
+        #urls=user_dataframe["articles"]
+        urls=user_urls
 
         article_ids = []
 
         for url in urls:
+
+          try:
             article_ids.append(self.url_hashmap[url]["articleid"])
+          except Exception:
+              print("Not founds " + url)
+
 
         user_item_profiles = self.get_item_profiles(article_ids)
         user_profile_norms = sklearn.preprocessing.normalize(np.sum(user_item_profiles, axis=0))
@@ -107,15 +117,31 @@ class ContentBasedRecommender:
 
 if __name__ == '__main__':
 
-    articles = json.load(open(ARTICLEFILE))
-    articles_df = pd.DataFrame.from_dict((articles), orient="index")
+    articles_url = json.load(open(ARTICLEFILE))
+    articles_df = pd.DataFrame.from_dict((articles_url), orient="index")
+    recommender=ContentBasedRecommender(articles_url)
 
-    recommender=ContentBasedRecommender(articles)
+    stocks_df=pd.read_json(open(STOCKFILE))
 
-    userdata = pd.read_json(USERFILE)
 
+    model_evaluator=ModelEvaluator(stocks_df)
+
+    user_training_data=pd.read_json(TRAINFILE)
+    user_test_data=pd.read_json(TESTFILE)
+
+
+
+    final_metric, detail_metric= model_evaluator.evaluate_model(recommender, user_training_data, user_test_data)
+
+    print(final_metric)
+
+    print(detail_metric.head(10))
     for i in range(10):
 
-     print(userdata.loc[i])
-     recommendation=recommender.recommend_items(userdata.loc[i])
-     print(recommendation)
+     #print(user_training_data.loc[i])
+     training_articles=user_training_data.loc[i]["articles"]
+     recommendation=recommender.recommend_items(training_articles)
+     #print(recommendation)
+    
+    
+    

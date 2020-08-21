@@ -3,6 +3,9 @@ from recommender.data.Stocks import getstockinfo
 from recommender.data.News import url_to_text
 import json
 
+
+#TODO: load all this from a config file
+
 DATADIR='/home/jehill/PycharmProjects/recommendersystem/recommender/data/jsons/'
 ARTRICLE_FILE= DATADIR + 'article.json'
 

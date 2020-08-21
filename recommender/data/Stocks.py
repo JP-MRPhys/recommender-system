@@ -1,5 +1,7 @@
 import pandas as pd
 
+#TODO: load all this from a config file
+
 
 def getstockinfo():
 

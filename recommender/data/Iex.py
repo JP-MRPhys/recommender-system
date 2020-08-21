@@ -1,6 +1,9 @@
 import pandas as pd 
 import numpy as np
 
+
+#TODO: load all this from a config file
+
 iexconfig={'baseurl': 'https://cloud.iexapis.com/'  , 
            'sandboxurl': 'https://sandbox.iexapis.com/stable/' , 
            'sandboxtoken': 'Tpk_1bb3e623cb6342708a67c0517a71e492', 
