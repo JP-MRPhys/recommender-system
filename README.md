@@ -1,4 +1,4 @@
-### recommender system
+### Recommender system
 
 A content based recommendor system for the finance news articles 
 
