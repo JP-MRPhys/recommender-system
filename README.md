@@ -14,6 +14,6 @@ Evaluation
 1. Recall TopN
 
 
-Deloyment technologyies: 1. Redis, flask (REST-endport), cassandra, Airflow,  Docker, Kubernetes
-Machine learning technologies: Sklearn, word2vec, NLP: NLPK, spacy, tensorflow, 
+Technologies: 1. Redis, flask (REST-endport), cassandra, Airflow,  Docker, Kubernetes
+Machine learning: Sklearn, word2vec, NLP: NLPK, spacy, tensorflow, 
 
