@@ -14,6 +14,5 @@ Evaluation
 1. Recall TopN
 
 
-Technologies: 1. Redis, flask (REST-endport), cassandra, Airflow,  Docker, Kubernetes
-Machine learning: Sklearn, word2vec, NLP: NLPK, spacy, tensorflow, 
+
 
