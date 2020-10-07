@@ -4,6 +4,7 @@
 import pandas as pd
 import requests
 import logging
+from time import sleep
 
 logger = logging.getLogger(__name__)
 
@@ -147,9 +148,9 @@ def read_linked_entities(data):
             c.get("valUrl").get("value").replace("http://www.wikidata.org/entity/", ""),
             c.get("valLabel").get("value"),
         )
+
         for c in data.get("results", {}).get("bindings", [])
     ]
-
 
 def query_entity_description(entity_id, session=None):
     """Query entity wikidata description from entityID
@@ -199,6 +200,7 @@ def search_wikidata(names, extras=None, describe=True, verbose=False):
         pd.DataFrame: wikipedia results for all names with found entities
     """
 
+
     results = []
     for idx, name in enumerate(names):
         entity_id = find_wikidata_id(name)
@@ -213,11 +215,14 @@ def search_wikidata(names, extras=None, describe=True, verbose=False):
         description = query_entity_description(entity_id) if describe else ""
 
         for related_entity, related_name in related_links:
+            relation=related_by(entity_id, related_entity)
+            sleep(1)
             result = dict(
                 name=name,
                 original_entity=entity_id,
                 linked_entities=related_entity,
                 name_linked_entities=related_name,
+                relation=relation
             )
             if describe:
                 result["description"] = description
@@ -228,12 +233,51 @@ def search_wikidata(names, extras=None, describe=True, verbose=False):
 
     return pd.DataFrame(results)
 
+def related_by(original_entity='Q7414', linked_entity='Q849363', session=None):
 
+
+    query = (
+    """
+    SELECT ?property ?propertyLabel ?refLabel WHERE {
+
+    
+    wd:"""
+    + original_entity + """ ?property wd:""" + linked_entity + """.
+    ?ref wikibase:directClaim ?property.
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    }   
+    LIMIT 1
+
+    """
+       )
+
+    session = get_session(session=session)
+  
+    try:
+        data = session.get(API_URL_WIKIDATA, params=dict(query=query, format="json")).json()
+        for r in data["results"]["bindings"]:
+            property_id=r["property"]["value"]
+            property_value=r["refLabel"]["value"]
+        
+        return property_value
+    except Exception as e:
+        logger.error("property not found")
+        return "Not known"
+
+    return "Not know"
 
 if __name__ == "__main__":
-    stocks=["disney", "blackrock", "mongodb", "apple", "tesla", "nvidia", "salesforce", "Netflix"]
+    
 
-
+    
+    stocks=["disney", "blackrock", "mongodb", "apple", "tesla", "nvidia","Netflix", 'Google', 'Nike' ,'ARKK', 'ETF', 'Wells fargo', 'J P Morgan', 'Stocks', 'nyse', 
+    'hedge fund', 'financial services', 'FINRA', 'pension fund', 'S&P 500 Index', 'NASDAQ', 'Steve jobs', "lululemon", "Costco", "Honeywell", "Citigroup inc", "Boeing", "Intuit",  "Oracle", "T-Mobile US Inc", "Moodys", "Electronic Arts Inc", "Domino's Pizza Inc"]
+    
     data=search_wikidata(stocks)
 
-    print(data.tail(40))
+    print(data.head(50))
+
+    data.to_csv("/Users/jehill/Documents/code/git/recommender-system/kgdata.cvs")
+
+ 
+        
