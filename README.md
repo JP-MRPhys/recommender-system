@@ -11,6 +11,8 @@ Downloads daily data from Nasqad, yahoo finance and Iex
 5. Suggested articles (in a browser): based on watchlist [WIP]
 6. Upload models to huggingface (for generic datasets the Microsoft new datasets) [WIP]
 
+articles scrapper from Nasdaq.com (broken April 2022), work on a fix, nasdaq not providing html tags now! Used paid sources e.g. IEX or write other crawlers
+
 
 
 
