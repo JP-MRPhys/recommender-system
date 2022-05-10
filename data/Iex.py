@@ -6,9 +6,9 @@ import numpy as np
 
 iexconfig={'baseurl': 'https://cloud.iexapis.com/'  , 
            'sandboxurl': 'https://sandbox.iexapis.com/stable/' , 
-           'sandboxtoken': 'Tpk_1bb3e623cb6342708a67c0517a71e492', 
-           'token':  'pk_eb4172c3df4e42a09206514386c44fcd', 
-           'topsurl':  }
+           'sandboxtoken': "YOUR TOKEN" , 
+           'token': "YOUR TOKEN" , 
+           'topsurl': "OPTIONAL" }
 
 
 class iex:
